@@ -1,0 +1,17 @@
+{
+  "name": "lodz-sdk-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "LODZ tooling workspace: yield attribution engine, risk model, redemption queue, seam router, SDK and CLI.",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10"
+  },
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
+  }
+}
