@@ -1,0 +1,68 @@
+{
+  "name": "lodz-orecart-queue",
+  "version": "0.1.0",
+  "description": "Redemption queue for LODZ. Enforces first-in-first-out ordering, per-ticket cooldowns and a daily throughput limit, and states the wait and the fee up front instead of discovering them at exit.",
+  "keywords": [
+    "solana",
+    "btcfi",
+    "redemption",
+    "queue",
+    "fifo",
+    "lodz"
+  ],
+  "license": "MIT",
+  "author": "LODZ",
+  "homepage": "https://lodz.fi",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cryptottat/lodz-core.git",
+    "directory": "packages/orecart-queue"
+  },
+  "bugs": {
+    "url": "https://github.com/Cryptottat/lodz-core/issues"
+  },
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "node scripts/clean.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "npm run clean && tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node scripts/dist-manifests.mjs",
+    "build:dev": "tsc -p tsconfig.dev.json",
+    "pretest": "npm run build:dev",
+    "test": "node --test \".dev/test/**/*.test.js\"",
+    "demo": "npm run build:dev && node .dev/examples/scenario.js",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "lodz-assay-engine": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "typescript": "^5.9.3"
+  }
+}
