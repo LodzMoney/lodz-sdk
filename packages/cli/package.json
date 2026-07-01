@@ -1,0 +1,58 @@
+{
+  "name": "lodz-cli",
+  "version": "0.1.0",
+  "description": "Command line client for the LODZ BTC yield layer on Solana. Breaks yield into sustainable, emissions and counterparty and shows the rate after impermanent loss.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cryptottat/lodz-core.git",
+    "directory": "packages/cli"
+  },
+  "keywords": [
+    "bitcoin",
+    "solana",
+    "yield",
+    "btcfi",
+    "cli",
+    "attribution"
+  ],
+  "bin": {
+    "lodz": "./dist/index.js"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true});require('node:fs').rmSync('.tmp-test',{recursive:true,force:true})\"",
+    "build": "npm run clean && tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node scripts/stamp-dist.mjs && node scripts/vendor-sdk.mjs && node scripts/chmod-bin.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pretest": "tsc -p tsconfig.test.json",
+    "test": "node --test .tmp-test/test/*.test.js",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0",
+    "lodz-sdk": "^0.1.0"
+  }
+}
