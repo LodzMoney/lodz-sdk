@@ -1,4 +1,4 @@
-# lodz-seam-router
+# @lodz/seam-router
 
 Deterministic capital routing across BTC yield seams on Solana.
 
@@ -14,7 +14,7 @@ what lets an off-chain planner and an on-chain program reach the same answer.
 ## Install
 
 ```sh
-npm install lodz-seam-router
+npm install @lodz/seam-router
 ```
 
 Node 18 or newer. Ships ESM and CommonJS builds with type declarations for both.
@@ -66,8 +66,8 @@ on-chain parameters are the authority and should be passed in.
 ### Plan an allocation
 
 ```ts
-import { planAllocation } from "lodz-seam-router";
-import type { Seam } from "lodz-seam-router";
+import { planAllocation } from "@lodz/seam-router";
+import type { Seam } from "@lodz/seam-router";
 
 // The catalogue is injected. This package does not ship one: it comes from the indexer.
 const seams: Seam[] = [
@@ -171,7 +171,7 @@ cost that offsets them has not been measured.
 ### Plan a rebalance
 
 ```ts
-import { planRebalance } from "lodz-seam-router";
+import { planRebalance } from "@lodz/seam-router";
 
 const rebalance = planRebalance({
   current,
@@ -205,7 +205,7 @@ rebalance moves capital, it never creates or destroys it.
 ### Aggregate realized yield
 
 ```ts
-import { aggregateRealizedYield } from "lodz-seam-router";
+import { aggregateRealizedYield } from "@lodz/seam-router";
 
 const report = aggregateRealizedYield(entries, { from, to });
 
@@ -222,7 +222,7 @@ schedule or the month the traders on the other side stop losing.
 ### Size a keeper bond
 
 ```ts
-import { keeperBondRequirement } from "lodz-seam-router";
+import { keeperBondRequirement } from "@lodz/seam-router";
 
 const bond = keeperBondRequirement(12.5, {
   btcPriceUsd: 100_000,
@@ -266,8 +266,8 @@ issues them.
 | `SeamRouterError` | Thrown for every rejected input, with a `code` |
 
 Domain types (`Seam`, `YieldKind`, `RiskTier`, `StopeProfile`, `PairVolatilityClass`) are
-re-exported here and are kept shape-identical to `lodz-assay-engine`, their canonical
-home.
+declared here and kept shape-identical to `@lodz/assay-engine`, which owns the canonical
+declarations.
 
 ## Development
 

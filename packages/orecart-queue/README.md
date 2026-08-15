@@ -1,4 +1,4 @@
-# lodz-orecart-queue
+# @lodz/orecart-queue
 
 The LODZ redemption queue: first in, first out, with the wait and the fee published
 before anyone commits.
@@ -16,7 +16,7 @@ could hold the protocol to.
 ## Install
 
 ```sh
-npm install lodz-orecart-queue
+npm install @lodz/orecart-queue
 ```
 
 Node 18 or newer. Ships ESM and CommonJS builds with type declarations for both.
@@ -46,7 +46,7 @@ who got paid.
 ### Build and advance a queue
 
 ```ts
-import { advance, createQueue, enqueueMany, queueDepth } from "lodz-orecart-queue";
+import { advance, createQueue, enqueueMany, queueDepth } from "@lodz/orecart-queue";
 
 const queue = enqueueMany(createQueue(), [
   {
@@ -90,7 +90,7 @@ only when the queue drained.
 ### Estimate a wait before joining
 
 ```ts
-import { estimateWait } from "lodz-orecart-queue";
+import { estimateWait } from "@lodz/orecart-queue";
 
 const estimate = estimateWait({
   queue,
@@ -122,7 +122,7 @@ object so a caller cannot present it as more than it is.
 ### Price the exit
 
 ```ts
-import { redemptionFeeBps, redemptionFeeBreakdown } from "lodz-orecart-queue";
+import { redemptionFeeBps, redemptionFeeBreakdown } from "@lodz/orecart-queue";
 
 const params = {
   baseFeeBps: 10,
@@ -169,7 +169,7 @@ just present it.
 ### Inspect depth
 
 ```ts
-import { queueDepth } from "lodz-orecart-queue";
+import { queueDepth } from "@lodz/orecart-queue";
 
 const depth = queueDepth(queue, "2026-08-15T00:00:00.000Z");
 

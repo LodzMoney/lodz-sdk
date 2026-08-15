@@ -1,4 +1,4 @@
-# lodz-sdk
+# @lodz/sdk
 
 Typed client for the LODZ BTC yield layer on Solana.
 
@@ -6,7 +6,7 @@ It reads the indexer and returns the yield split into three kinds, so a caller
 can tell fee revenue from printed tokens from someone else's losses.
 
 ```
-npm install lodz-sdk
+npm install @lodz/sdk
 ```
 
 Node 18 or newer. ESM and CommonJS, with type declarations for both.
@@ -16,7 +16,7 @@ Node 18 or newer. ESM and CommonJS, with type declarations for both.
 ## Use
 
 ```ts
-import { LodzClient } from "lodz-sdk";
+import { LodzClient } from "@lodz/sdk";
 
 const lodz = new LodzClient({ apiUrl: "https://api.lodz.money" });
 
@@ -80,7 +80,7 @@ Never by symbol. WBTC exists on Solana under two distinct mints, and a symbol
 lookup resolves to the wrong one without saying so.
 
 ```ts
-import { assetByMint, BTC_ASSETS, DENIED_MINTS } from "lodz-sdk";
+import { assetByMint, BTC_ASSETS, DENIED_MINTS } from "@lodz/sdk";
 
 assetByMint("3NZ9JMVBmGAqocybic2c7LQCJScmgsAZ6vQqTDzcqmJh");
 // { symbol: "WBTC", trustModel: "bridged", wrapHops: 2, freezable: false, ... }
@@ -137,7 +137,7 @@ dashboard ends up quietly showing zero.
 All extend `LodzError`.
 
 ```ts
-import { LodzApiError, LodzNetworkError } from "lodz-sdk";
+import { LodzApiError, LodzNetworkError } from "@lodz/sdk";
 
 try {
   await lodz.assay.estimate({ btcAmount: 1.5 });

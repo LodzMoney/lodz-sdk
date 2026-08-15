@@ -7,8 +7,8 @@
  * misstatement this project exists to correct.
  */
 
-import type { AssayResponse, LodzClient, QueueResponse, SeamsResponse } from "lodz-sdk";
-import { assetByMint } from "lodz-sdk";
+import type { AssayResponse, LodzClient, QueueResponse, SeamsResponse } from "@lodz/sdk";
+import { assetByMint } from "@lodz/sdk";
 import { flagAmount, flagString, CliUsageError, type StopeName, type YieldTypeName } from "./args.js";
 import { BAR_WIDTH, GLYPH, btc, fit, padLeft, padRight, pct, rule, stackedBar, type Style } from "./render.js";
 

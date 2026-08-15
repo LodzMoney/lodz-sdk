@@ -1,6 +1,6 @@
 {
-  "name": "lodz-headlamp-risk",
-  "version": "0.1.0",
+  "name": "@lodz/headlamp-risk",
+  "version": "0.1.1",
   "description": "Layered bridge, custody, protocol, oracle and liquidity risk assessment for BTC positions on Solana.",
   "license": "MIT",
   "type": "module",
@@ -52,7 +52,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "lodz-assay-engine": "^0.1.0"
+    "@lodz/assay-engine": "^0.1.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

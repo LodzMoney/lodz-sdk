@@ -1,8 +1,12 @@
-// Vendor lodz-sdk into this package's build output.
+// Vendor @lodz/sdk into this package's build output.
 //
 // Why this exists rather than a plain dependency:
 //
-// lodz-sdk is not on the registry, so `npm install lodz-cli` cannot resolve it.
+// `@lodz/sdk` is on the registry, so a plain dependency would resolve. It is
+// vendored anyway to hold this package at zero runtime dependencies: a global
+// `npm i -g @lodz/cli` then pulls nothing else down and cannot break on a
+// resolution its user never asked for.
+//
 // The first attempt used bundleDependencies, which does produce a working
 // tarball -- until anyone runs `npm install` at the workspace root. That prunes
 // the physical copy npm needs to bundle and replaces it with a hoisted symlink,
@@ -23,7 +27,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const cliRoot = resolve(here, "..");
 const sdkRoot = resolve(cliRoot, "..", "sdk-ts");
 
-const SPECIFIER = "lodz-sdk";
+const SPECIFIER = "@lodz/sdk";
 const REPLACEMENT = "./vendor/lodz-sdk/index.js";
 
 function fail(message) {
@@ -32,7 +36,7 @@ function fail(message) {
 }
 
 if (!existsSync(join(sdkRoot, "dist", "index.js"))) {
-  fail("lodz-sdk is not built. Run `npm run build` in packages/sdk-ts first.");
+  fail("@lodz/sdk is not built. Run `npm run build` in packages/sdk-ts first.");
 }
 
 /** Rewrite the bare specifier to the vendored path in every emitted file. */
@@ -76,7 +80,7 @@ for (const t of targets) {
   }
 
   const n = rewriteDir(t.out);
-  process.stdout.write(`vendored lodz-sdk into ${t.label}, rewrote ${n} file(s)\n`);
+  process.stdout.write(`vendored @lodz/sdk into ${t.label}, rewrote ${n} file(s)\n`);
 }
 
 // Fail loudly if any bare specifier survived. A missed rewrite would install
@@ -95,4 +99,4 @@ for (const t of targets) {
   }
 }
 if (leftover.length > 0) fail(`bare "${SPECIFIER}" specifier left in: ${leftover.join(", ")}`);
-process.stdout.write("verified: no bare lodz-sdk specifier remains in the build output\n");
+process.stdout.write("verified: no bare @lodz/sdk specifier remains in the build output\n");

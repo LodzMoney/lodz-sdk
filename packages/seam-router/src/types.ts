@@ -2,11 +2,12 @@
  * Domain vocabulary shared across the LODZ core packages.
  *
  * The canonical home for `YieldKind`, `SeamVenueKind`, `RiskTier`, `StopeProfile`,
- * `PairVolatilityClass` and `Seam` is `lodz-assay-engine`. The declarations below are a
+ * `PairVolatilityClass` and `Seam` is `@lodz/assay-engine`. The declarations below are a
  * shape-identical local mirror so this package compiles, tests and publishes on its own
  * schedule.
  *
- * re-exported from lodz-assay-engine once published
+ * The same declarations are re-exported from `@lodz/assay-engine`. The mirror stays here
+ * so a types-only overlap costs this package no runtime dependency.
  */
 
 /**

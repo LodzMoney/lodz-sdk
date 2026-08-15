@@ -1,4 +1,4 @@
-# lodz-headlamp-risk
+# @lodz/headlamp-risk
 
 Measures the exposure behind a BTC position on Solana as five layers, and keeps
 the worst layer visible instead of averaging it away.
@@ -9,12 +9,12 @@ feed that protocol trusts, and the depth available when the position has to be
 closed. A single number that blends all five hides which one is about to give.
 
 Domain types (`Seam`, `Allocation`, `RiskTier`) come from
-[`lodz-assay-engine`](https://www.npmjs.com/package/lodz-assay-engine).
+[`@lodz/assay-engine`](https://www.npmjs.com/package/@lodz/assay-engine).
 
 ## Install
 
 ```
-npm install lodz-headlamp-risk
+npm install @lodz/headlamp-risk
 ```
 
 Node 18 or newer. Ships ESM and CommonJS builds with type declarations for both.
@@ -79,7 +79,7 @@ result.appliedFloors[0];  // { layer: "custody", evidencedSeverity: 1, flooredSe
 ```
 
 ```ts
-import { assessSeam } from "lodz-headlamp-risk";
+import { assessSeam } from "@lodz/headlamp-risk";
 
 const result = assessSeam(seam, [
   { layer: "bridge", label: "bridge signer set is unaudited", severity: 5,
@@ -132,7 +132,7 @@ ships no asset data: build a ledger from your own confirmed research and inject
 it, either per call or once via `setCustodyLedger`.
 
 ```ts
-import { createCustodyLedger, describeCustody, setCustodyLedger } from "lodz-headlamp-risk";
+import { createCustodyLedger, describeCustody, setCustodyLedger } from "@lodz/headlamp-risk";
 
 setCustodyLedger([
   {
@@ -201,7 +201,7 @@ bitcoin held on the Bitcoin network.
 Every rejection throws `HeadlampError` with a `code` (`INVALID_FACTOR`,
 `INVALID_INPUT`, `INVALID_CUSTODY_MODEL`, `EMPTY_PORTFOLIO`) plus the offending
 `field`, `seamId` or `asset`. Allocation and seam shape rejections surface as
-`AssayError` from `lodz-assay-engine`, which owns that validation.
+`AssayError` from `@lodz/assay-engine`, which owns that validation.
 
 ## Scripts
 

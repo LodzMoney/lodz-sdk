@@ -11,7 +11,7 @@
     "npm": ">=10"
   },
   "scripts": {
-    "build": "npm run build -w lodz-assay-engine -w lodz-headlamp-risk -w lodz-orecart-queue -w lodz-seam-router -w lodz-sdk -w lodz-cli",
-    "test": "npm run test -w lodz-assay-engine -w lodz-headlamp-risk -w lodz-orecart-queue -w lodz-seam-router -w lodz-sdk -w lodz-cli"
+    "build": "npm run build -w @lodz/assay-engine -w @lodz/headlamp-risk -w @lodz/orecart-queue -w @lodz/seam-router -w @lodz/sdk -w @lodz/cli",
+    "test": "npm run test -w @lodz/assay-engine -w @lodz/headlamp-risk -w @lodz/orecart-queue -w @lodz/seam-router -w @lodz/sdk -w @lodz/cli"
   }
 }

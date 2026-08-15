@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { AssayError } from "lodz-assay-engine";
+import { AssayError } from "@lodz/assay-engine";
 
 import { HeadlampError } from "../src/errors.js";
 import { assessPortfolio } from "../src/portfolio.js";

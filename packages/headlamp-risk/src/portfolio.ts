@@ -1,6 +1,6 @@
-import { BPS_DENOMINATOR, roundDivInt } from "lodz-assay-engine";
-import type { Allocation, RiskTier, Seam } from "lodz-assay-engine";
-import { resolvePortfolio } from "lodz-assay-engine";
+import { BPS_DENOMINATOR, roundDivInt } from "@lodz/assay-engine";
+import type { Allocation, RiskTier, Seam } from "@lodz/assay-engine";
+import { resolvePortfolio } from "@lodz/assay-engine";
 
 import { assessSeam, tierFromScore } from "./assess.js";
 import type { AssessSeamOptions, SeamRiskAssessment } from "./assess.js";

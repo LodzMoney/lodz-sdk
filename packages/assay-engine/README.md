@@ -1,4 +1,4 @@
-# lodz-assay-engine
+# @lodz/assay-engine
 
 Splits a BTC yield number by who actually pays it, and projects what is left
 once the incentive programs end and impermanent loss is taken off.
@@ -14,7 +14,7 @@ redeclaring them.
 ## Install
 
 ```
-npm install lodz-assay-engine
+npm install @lodz/assay-engine
 ```
 
 Node 18 or newer. Ships ESM and CommonJS builds with type declarations for both.
@@ -87,7 +87,7 @@ seams by `assetMint`: more than one Solana mint ships under the same BTC ticker.
 Splits the portfolio rate by who pays it.
 
 ```ts
-import { decomposeYield } from "lodz-assay-engine";
+import { decomposeYield } from "@lodz/assay-engine";
 
 const result = decomposeYield(seams);
 result.apyBps;               // 5915 -> 59.15%

@@ -1,11 +1,11 @@
 /**
- * lodz-headlamp-risk
+ * @lodz/headlamp-risk
  *
  * Measures the bridge, custody, protocol, oracle and liquidity exposure behind
  * a BTC position on Solana as layers, and keeps the worst layer visible instead
  * of averaging it away.
  *
- * Domain types come from `lodz-assay-engine`.
+ * Domain types come from `@lodz/assay-engine`.
  */
 
 export type { RiskFactor, RiskLayer, Severity } from "./types.js";
@@ -84,4 +84,4 @@ export type {
   TrustModel,
 } from "./custody.js";
 
-export type { Allocation, RiskTier, Seam, YieldKind } from "lodz-assay-engine";
+export type { Allocation, RiskTier, Seam, YieldKind } from "@lodz/assay-engine";

@@ -18,7 +18,7 @@ import {
   LodzNetworkError,
   LodzTimeoutError,
   LodzUsageError,
-} from "lodz-sdk";
+} from "@lodz/sdk";
 import {
   CliUsageError,
   flagBool,
@@ -37,9 +37,11 @@ import {
   type Ctx,
 } from "./commands.js";
 import { makeStyle } from "./render.js";
+// Stamped from package.json at build time. Never edit a version in by hand:
+// see src/version.ts for why the build refuses one.
+import { VERSION } from "./version.js";
 
 const DEFAULT_API = "https://api.lodz.money";
-const VERSION = "0.1.0";
 
 const HELP = `lodz -- BTC yield attribution on Solana
 

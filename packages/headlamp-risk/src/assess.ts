@@ -1,6 +1,6 @@
-import { roundDivInt } from "lodz-assay-engine";
-import type { RiskTier, Seam, YieldKind } from "lodz-assay-engine";
-import { validateSeam } from "lodz-assay-engine";
+import { roundDivInt } from "@lodz/assay-engine";
+import type { RiskTier, Seam, YieldKind } from "@lodz/assay-engine";
+import { validateSeam } from "@lodz/assay-engine";
 
 import {
   createCustodyLedger,

@@ -1,5 +1,5 @@
 /**
- * lodz-sdk -- typed client for the LODZ BTC yield layer.
+ * @lodz/sdk -- typed client for the LODZ BTC yield layer.
  *
  * Yield is reported in three kinds, not two. See {@link YieldType}.
  * BTC assets are identified by mint, never by symbol: WBTC has two distinct

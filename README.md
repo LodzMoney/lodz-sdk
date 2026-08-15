@@ -54,15 +54,15 @@ nothing to stop.
 
 | Package | Purpose |
 |---|---|
-| `lodz-assay-engine` | Yield attribution. Splits a return into the three kinds, projects a post-emissions rate, and reports data quality |
-| `lodz-headlamp-risk` | Risk tiers across bridge, custody and protocol layers |
-| `lodz-orecart-queue` | Redemption queue: wait time, delay and fee arithmetic |
-| `lodz-seam-router` | Allocation across seams under TVL and concentration constraints |
-| `lodz-sdk` | Client SDK for wallets and custodians |
-| `lodz-cli` | Command line client: `lodz assay`, `lodz seams`, `lodz queue` |
+| `@lodz/assay-engine` | Yield attribution. Splits a return into the three kinds, projects a post-emissions rate, and reports data quality |
+| `@lodz/headlamp-risk` | Risk tiers across bridge, custody and protocol layers |
+| `@lodz/orecart-queue` | Redemption queue: wait time, delay and fee arithmetic |
+| `@lodz/seam-router` | Allocation across seams under TVL and concentration constraints |
+| `@lodz/sdk` | Client SDK for wallets and custodians |
+| `@lodz/cli` | Command line client: `lodz assay`, `lodz seams`, `lodz queue` |
 
-Package names are unscoped. There is no `@lodz` npm organisation, so a scoped name would
-not resolve.
+Package names are scoped to the `@lodz` npm organisation. The scope covers the package
+names only: the command line client still installs one executable, named `lodz`.
 
 ---
 
@@ -71,12 +71,14 @@ not resolve.
 From the registry:
 
 ```
-npm i -g lodz-cli        # command line client, no runtime dependencies
-npm i lodz-sdk           # client SDK
+npm i -g @lodz/cli       # command line client, no runtime dependencies
+npm i @lodz/sdk          # client SDK
 ```
 
-All six packages are published at 0.1.0: `lodz-cli`, `lodz-sdk`, `lodz-assay-engine`,
-`lodz-headlamp-risk`, `lodz-orecart-queue`, `lodz-seam-router`.
+Versions differ by package. `@lodz/cli` is at 0.1.2; `@lodz/sdk`, `@lodz/assay-engine`,
+`@lodz/headlamp-risk`, `@lodz/orecart-queue` and `@lodz/seam-router` are at 0.1.1. The
+command line client is one patch ahead because it shipped a fix to the version string it
+prints; the five libraries were not republished with unchanged code merely to match it.
 
 Reading needs no wallet and no key:
 

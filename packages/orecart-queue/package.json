@@ -1,6 +1,6 @@
 {
-  "name": "lodz-orecart-queue",
-  "version": "0.1.0",
+  "name": "@lodz/orecart-queue",
+  "version": "0.1.1",
   "description": "Redemption queue for LODZ. Enforces first-in-first-out ordering, per-ticket cooldowns and a daily throughput limit, and states the wait and the fee up front instead of discovering them at exit.",
   "keywords": [
     "solana",
@@ -57,9 +57,6 @@
     "test": "node --test \".dev/test/**/*.test.js\"",
     "demo": "npm run build:dev && node .dev/examples/scenario.js",
     "prepublishOnly": "npm run build"
-  },
-  "dependencies": {
-    "lodz-assay-engine": "^0.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",

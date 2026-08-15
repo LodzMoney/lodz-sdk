@@ -1,5 +1,5 @@
 /**
- * lodz-assay-engine
+ * @lodz/assay-engine
  *
  * Splits a BTC yield number by who actually pays it -- an outside user for a
  * service, an incentive program until a date, or a losing counterparty -- and

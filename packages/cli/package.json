@@ -1,6 +1,6 @@
 {
-  "name": "lodz-cli",
-  "version": "0.1.0",
+  "name": "@lodz/cli",
+  "version": "0.1.2",
   "description": "Command line client for the LODZ BTC yield layer on Solana. Breaks yield into sustainable, emissions and counterparty and shows the rate after impermanent loss.",
   "license": "MIT",
   "type": "module",
@@ -48,15 +48,15 @@
   ],
   "scripts": {
     "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true});require('node:fs').rmSync('.tmp-test',{recursive:true,force:true})\"",
-    "build": "npm run clean && tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node scripts/stamp-dist.mjs && node scripts/vendor-sdk.mjs && node scripts/chmod-bin.mjs",
+    "build": "npm run clean && tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node scripts/stamp-dist.mjs && node scripts/vendor-sdk.mjs && node scripts/chmod-bin.mjs && node scripts/verify-version.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "pretest": "tsc -p tsconfig.test.json",
     "test": "node --test .tmp-test/test/*.test.js",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build && npm run test"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
     "typescript": "^5.7.0",
-    "lodz-sdk": "^0.1.0"
+    "@lodz/sdk": "^0.1.0"
   }
 }

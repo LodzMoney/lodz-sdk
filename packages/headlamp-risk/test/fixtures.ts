@@ -1,4 +1,4 @@
-import type { Seam } from "lodz-assay-engine";
+import type { Seam } from "@lodz/assay-engine";
 
 import type { RiskFactor, RiskLayer, Severity } from "../src/types.js";
 import { RISK_LAYERS } from "../src/types.js";

@@ -1,5 +1,5 @@
 /**
- * lodz-orecart-queue
+ * @lodz/orecart-queue
  *
  * The LODZ redemption queue.
  *

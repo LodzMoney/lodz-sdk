@@ -1,4 +1,4 @@
-# lodz-cli
+# @lodz/cli
 
 Command line client for the LODZ BTC yield layer on Solana.
 
@@ -7,7 +7,7 @@ someone actually paying, how much is being printed, and how much is somebody
 else losing.
 
 ```
-npm install -g lodz-cli
+npm install -g @lodz/cli
 lodz assay --btc 1.5
 ```
 

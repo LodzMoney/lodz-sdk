@@ -2,11 +2,12 @@
  * Types for the LODZ redemption queue.
  *
  * The shared domain vocabulary (`YieldKind`, `RiskTier`, `StopeProfile`, `Seam`) lives
- * in `lodz-assay-engine`. The queue does not need those types: a redemption ticket is
+ * in `@lodz/assay-engine`. The queue does not need those types: a redemption ticket is
  * about principal leaving, not about where the yield came from. `StopeProfile` is
  * mirrored here only so callers can key queue parameters by vault posture.
  *
- * re-exported from lodz-assay-engine once published
+ * `StopeProfile` is also re-exported from `@lodz/assay-engine`. The mirror stays here so
+ * a types-only overlap costs this package no runtime dependency.
  */
 
 /** Depositor-selected vault posture. */

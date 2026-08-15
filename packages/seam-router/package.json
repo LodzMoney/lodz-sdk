@@ -1,6 +1,6 @@
 {
-  "name": "lodz-seam-router",
-  "version": "0.1.0",
+  "name": "@lodz/seam-router",
+  "version": "0.1.1",
   "description": "Deterministic capital routing across BTC yield seams on Solana. Enforces per-posture ceilings on counterparty-funded, emission-funded and uncorrelated LP exposure, routes on trailing rates rather than spot, and never treats an unmeasured impermanent loss as zero.",
   "keywords": [
     "solana",
@@ -58,9 +58,6 @@
     "test": "node --test \".dev/test/**/*.test.js\"",
     "demo": "npm run build:dev && node .dev/examples/scenario.js",
     "prepublishOnly": "npm run build"
-  },
-  "dependencies": {
-    "lodz-assay-engine": "^0.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",

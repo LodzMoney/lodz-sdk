@@ -1,5 +1,5 @@
 /**
- * lodz-seam-router
+ * @lodz/seam-router
  *
  * Deterministic capital routing across BTC yield seams on Solana.
  *
