@@ -68,6 +68,42 @@ not resolve.
 
 ## Install
 
+From the registry:
+
+```
+npm i -g lodz-cli        # command line client, no runtime dependencies
+npm i lodz-sdk           # client SDK
+```
+
+All six packages are published at 0.1.0: `lodz-cli`, `lodz-sdk`, `lodz-assay-engine`,
+`lodz-headlamp-risk`, `lodz-orecart-queue`, `lodz-seam-router`.
+
+Reading needs no wallet and no key:
+
+```
+LODZ_API_URL=https://api.lodz.money lodz assay --btc 1.5
+LODZ_API_URL=https://api.lodz.money lodz seams
+LODZ_API_URL=https://api.lodz.money lodz queue
+```
+
+### What deposit and redeem actually do right now
+
+```
+lodz deposit --btc <n> --asset <mint>
+lodz redeem  --amount <n>
+```
+
+**These build and describe a request. They do not sign and they do not submit.** The
+Anchor vault program is not deployed to mainnet, so there is nothing to submit to. The
+commands exist because the request shape is settled and worth reading; they are not a
+placeholder that silently fails, and they exit with a distinct status when an action is
+unavailable rather than pretending to have worked.
+
+`--asset` takes a mint, never a symbol. WBTC has two mints on Solana and the CLI
+refuses the ambiguity rather than guessing.
+
+### From source
+
 ```
 npm install
 npm run build
