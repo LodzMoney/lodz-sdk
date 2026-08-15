@@ -158,7 +158,7 @@ export async function cmdAssay(
 
   const f = res.fee;
   out(
-    `  ${padRight(`Redemption fee (${f.performance_fee_bps} bps of yield)`, 34)}${padLeft(
+    `  ${padRight(`Redemption fee (${f.redemption_fee_bps} bps of yield)`, 34)}${padLeft(
       `${f.net_total_apy_bps} bps`,
       12,
     )}${padLeft(pct(f.net_total_apy_bps), 10)}   ${style.dim(`${btc(f.net_annual_btc)} BTC net`)}`,
