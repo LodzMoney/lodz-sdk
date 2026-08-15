@@ -36,6 +36,12 @@ registry yet, and there is no publish order to get right.
   Redemption fee (10 bps of yield)       806 bps     8.06%   0.12096205 BTC net
 ```
 
+The shape above is what the client prints. The figures are a snapshot taken when
+this README was written, not a promise: rates are read from the venues at each
+run, so your own output will carry different numbers and its own `source ... at`
+line. That header exists so a printed example and a live run can be told apart
+rather than reconciled.
+
 The three kinds are never summed into one headline number. Each has its own
 glyph as well as its own colour, so the split survives a pipe, a `NO_COLOR`
 terminal and a reader who cannot distinguish the hues.
