@@ -18,7 +18,7 @@ Node 18 or newer. ESM and CommonJS, with type declarations for both.
 ```ts
 import { LodzClient } from "lodz-sdk";
 
-const lodz = new LodzClient({ apiUrl: "https://api.lodz.fi" });
+const lodz = new LodzClient({ apiUrl: "https://api.lodz.money" });
 
 const header = await lodz.metrics.header();
 const seams = await lodz.seams.list();
@@ -32,7 +32,7 @@ Options:
 
 ```ts
 new LodzClient({
-  apiUrl: "https://api.lodz.fi",
+  apiUrl: "https://api.lodz.money",
   fetch: myFetch,      // injected; defaults to the global
   timeoutMs: 15_000,   // per request
   headers: { "x-trace": "..." },

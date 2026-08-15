@@ -13,14 +13,14 @@
   ],
   "license": "MIT",
   "author": "LODZ",
-  "homepage": "https://lodz.fi",
+  "homepage": "https://lodz.money",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Cryptottat/lodz-core.git",
+    "url": "git+https://github.com/LodzMoney/lodz-sdk.git",
     "directory": "packages/seam-router"
   },
   "bugs": {
-    "url": "https://github.com/Cryptottat/lodz-core/issues"
+    "url": "https://github.com/LodzMoney/lodz-sdk/issues"
   },
   "type": "module",
   "main": "./dist/cjs/index.js",

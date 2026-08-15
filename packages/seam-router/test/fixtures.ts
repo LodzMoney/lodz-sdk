@@ -28,7 +28,7 @@ export function seam(overrides: Partial<Seam> & Pick<Seam, "id">): Seam {
     ilEstimateBps: null,
     pairVolatilityClass: null,
     wrapHops: 1,
-    sourceUrl: "https://lodz.fi/seam",
+    sourceUrl: "https://lodz.money/seam",
     updatedAt: FIXTURE_NOW,
     ...overrides,
   };

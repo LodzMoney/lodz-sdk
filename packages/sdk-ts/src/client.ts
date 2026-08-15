@@ -27,7 +27,7 @@ const STOPES: readonly Stope[] = ["conservative", "balanced", "aggressive"];
 const YIELD_TYPES: readonly YieldType[] = ["sustainable", "emissions", "counterparty"];
 
 export interface LodzClientOptions {
-  /** Base URL of the indexer, for example `https://api.lodz.fi`. */
+  /** Base URL of the indexer, for example `https://api.lodz.money`. */
   readonly apiUrl: string;
   /** Injected fetch. Defaults to the global. */
   readonly fetch?: FetchLike;
@@ -39,7 +39,7 @@ export interface LodzClientOptions {
 
 function normaliseBaseUrl(apiUrl: string): string {
   if (typeof apiUrl !== "string" || apiUrl.trim() === "") {
-    throw new LodzUsageError("apiUrl is required, for example https://api.lodz.fi");
+    throw new LodzUsageError("apiUrl is required, for example https://api.lodz.money");
   }
   const trimmed = apiUrl.trim().replace(/\/+$/, "");
   if (!/^https?:\/\//.test(trimmed)) {

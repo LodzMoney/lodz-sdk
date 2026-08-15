@@ -54,7 +54,7 @@ lodz redeem  --amount <n> [--stope <p>] [--json]
 
 | Option | Meaning |
 |---|---|
-| `--api <url>` | Indexer base URL. Defaults to `$LODZ_API_URL`, then `https://api.lodz.fi` |
+| `--api <url>` | Indexer base URL. Defaults to `$LODZ_API_URL`, then `https://api.lodz.money` |
 | `--json` | Raw JSON on stdout, never coloured. Suitable for a pipe |
 | `--timeout <ms>` | Per-request timeout. Default 15000 |
 | `--help`, `-h` | Usage. Exits 0 |

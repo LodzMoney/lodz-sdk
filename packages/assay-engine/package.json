@@ -7,10 +7,14 @@
   "engines": {
     "node": ">=18"
   },
+  "homepage": "https://lodz.money",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Cryptottat/lodz-core.git",
+    "url": "git+https://github.com/LodzMoney/lodz-sdk.git",
     "directory": "packages/assay-engine"
+  },
+  "bugs": {
+    "url": "https://github.com/LodzMoney/lodz-sdk/issues"
   },
   "keywords": [
     "bitcoin",

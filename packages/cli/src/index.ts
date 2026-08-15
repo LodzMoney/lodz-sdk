@@ -38,7 +38,7 @@ import {
 } from "./commands.js";
 import { makeStyle } from "./render.js";
 
-const DEFAULT_API = "https://api.lodz.fi";
+const DEFAULT_API = "https://api.lodz.money";
 const VERSION = "0.1.0";
 
 const HELP = `lodz -- BTC yield attribution on Solana
