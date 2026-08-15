@@ -153,8 +153,34 @@ export interface RedemptionEstimate {
   readonly note: string;
 }
 
+/**
+ * What the projection subtracts before it reports a net rate.
+ *
+ * There is one fee, and it is a redemption fee. It is charged when a position is
+ * redeemed, and its basis is the realised yield attached to the shares being
+ * redeemed. Principal is not in the basis, so a redemption that accrued no yield
+ * is charged nothing. No performance fee and no management fee exist.
+ */
 export interface FeeBreakdown {
+  /** Redemption fee rate, in basis points of realised yield. */
+  readonly redemption_fee_bps: number;
+  /**
+   * The same fee in BTC, over the projected year this response describes.
+   * It is taken out of projected yield, never out of the deposit.
+   */
+  readonly redemption_fee_btc: number;
+  /**
+   * @deprecated Alias of `redemption_fee_bps` and carries the same corrected
+   * value. It stays because the published `@lodz/cli` 0.1.2 reads this key and
+   * would lose the figure if it disappeared. New code should read
+   * `redemption_fee_bps`.
+   */
   readonly performance_fee_bps: number;
+  /**
+   * @deprecated Alias of `redemption_fee_btc` and carries the same corrected
+   * value. It stays because the published `@lodz/cli` 0.1.2 reads this key.
+   * New code should read `redemption_fee_btc`.
+   */
   readonly performance_fee_btc: number;
   readonly net_annual_btc: number;
   readonly net_annual_usd: number;

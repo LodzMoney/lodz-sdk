@@ -33,7 +33,7 @@ registry yet, and there is no publish order to get right.
 
   After impermanent loss                 776 bps     7.76%   31 bps of estimated loss deducted
   After emissions end                    807 bps     8.07%   no incentive programme to end
-  After performance fee (1000 bps)       726 bps     7.26%   0.10897482 BTC net
+  Redemption fee (10 bps of yield)       806 bps     8.06%   0.12096205 BTC net
 ```
 
 The three kinds are never summed into one headline number. Each has its own
