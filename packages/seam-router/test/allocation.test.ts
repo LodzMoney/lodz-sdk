@@ -108,24 +108,37 @@ test("allocations plus idle always add up to exactly 10000 bps", () => {
   }
 });
 
-test("counterparty exposure differs by profile and never breaches its ceiling", () => {
+/**
+ * Only the forward chamber takes counterparty-funded yield.
+ *
+ * This used to assert that a balanced book takes some, which contradicted the
+ * site: CHAMBER_POLICY in apps/web carries admitsCounterparty:false for both
+ * conservative and balanced, and the balanced stance sentence offers an
+ * emission schedule and nothing else. The router was the only place that said
+ * otherwise, and its own header calls these "defaults, not law" that yield to
+ * the on-chain vault. RiskProfile::max_counterparty_bps now makes the chain
+ * reject balanced counterparty weight outright, so a router that kept
+ * proposing it would only be generating transactions that fail.
+ */
+test("counterparty exposure is taken only by the forward profile", () => {
   const conservative = plan("conservative");
   const balanced = plan("balanced");
   const aggressive = plan("aggressive");
 
   assert.equal(conservative.counterpartyBps, 0, "a conservative book takes none of another trader's losses");
-  assert.ok(balanced.counterpartyBps > 0, "a balanced book takes some");
+  assert.equal(balanced.counterpartyBps, 0, "and neither does a balanced one -- the site says so");
   assert.ok(
     aggressive.counterpartyBps > balanced.counterpartyBps,
-    "an aggressive book takes more than a balanced one",
+    "an aggressive book is the only one that takes any",
   );
 
   assert.ok(conservative.counterpartyBps <= DEFAULT_CONSTRAINTS.profiles.conservative.maxCounterpartyBps);
   assert.ok(balanced.counterpartyBps <= DEFAULT_CONSTRAINTS.profiles.balanced.maxCounterpartyBps);
   assert.ok(aggressive.counterpartyBps <= DEFAULT_CONSTRAINTS.profiles.aggressive.maxCounterpartyBps);
 
+  // Both refusing profiles record why, rather than dropping the seam silently.
   assert.equal(reasonFor(conservative, "X1"), "counterparty-not-allowed");
-  assert.equal(bpsOf(balanced, "X1"), DEFAULT_CONSTRAINTS.profiles.balanced.maxCounterpartyBps);
+  assert.equal(reasonFor(balanced, "X1"), "counterparty-not-allowed");
 });
 
 test("a seam under the liquidity floor is excluded with its reason recorded", () => {

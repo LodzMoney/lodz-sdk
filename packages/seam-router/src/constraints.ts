@@ -57,7 +57,14 @@ export const DEFAULT_CONSTRAINTS: AllocationConstraints = Object.freeze({
       liquidityBufferBps: 500,
     }),
     balanced: Object.freeze({
-      maxCounterpartyBps: 1_000,
+      // Zero, not 1_000. CHAMBER_POLICY in apps/web carries
+      // admitsCounterparty:false for this chamber and its stance sentence
+      // offers only an emission schedule, so a router default of 10 percent
+      // would route exposure the site says this chamber does not take. The
+      // on-chain RiskProfile::max_counterparty_bps now rejects it outright, so
+      // leaving this at 1_000 would only produce allocations the chain
+      // refuses.
+      maxCounterpartyBps: 0,
       maxUncorrelatedLpBps: 3_500,
       maxEmissionsBps: 3_500,
       maxSingleVenueBps: 4_000,
