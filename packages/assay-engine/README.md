@@ -140,6 +140,22 @@ replace `DEFAULT_STOPE_POLICIES` via `stopePolicies`. Each profile caps emission
 and counterparty exposure separately, because yield paid out of trader losses is
 not fee income.
 
+The two ceilings in `DEFAULT_STOPE_POLICIES` are the `lodz-vault` program's own
+limits, restated here so an integrator can check an allocation before the chain
+rejects it:
+
+| Profile | Max emissions | Max counterparty |
+|---|---|---|
+| `conservative` | 20.00% | 0.00% |
+| `balanced` | 50.00% | 0.00% |
+| `aggressive` | 100.00% | 30.00% |
+
+These are ceilings on what the program permits, not descriptions of what a stope
+currently holds -- read `emissionsShareBps` and `counterpartyShareBps` for that.
+The aggressive row is 100.00%: an aggressive stope may sit entirely on yield that
+has an end date, which is why every projection reports the emissions share and
+models the rate after those programs stop.
+
 ### Display guards
 
 These exist because the underlying market data contains numbers that are true

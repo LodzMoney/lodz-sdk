@@ -1,6 +1,6 @@
 {
   "name": "@lodz/assay-engine",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Splits BTC yield into sustainable and emissions funded parts and projects the rate after incentive programs end.",
   "license": "MIT",
   "type": "module",

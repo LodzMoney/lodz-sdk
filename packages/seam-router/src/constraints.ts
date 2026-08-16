@@ -35,19 +35,46 @@ export const PAIR_VOLATILITY_CLASSES: readonly PairVolatilityClass[] = [
  * accepts none of it looks completely different from one that accepts a third of it,
  * even when both are offered the same seams.
  *
+ * # Where the two yield-kind ceilings come from
+ *
+ * `maxEmissionsBps` and `maxCounterpartyBps` are transcribed from the `lodz-vault`
+ * program: `RiskProfile::max_emissions_bps` and `RiskProfile::max_counterparty_bps` in
+ * `programs/lodz-vault/src/state/mod.rs`. They are not this package's opinion. The
+ * program is deployed on devnet, and `register_seam` and `update_seam_allocation`
+ * reject anything over them with `EmissionsAllocationExceeded` (6030) or
+ * `CounterpartyAllocationExceeded` (6053). Those are the ceilings a caller operates
+ * under whatever this file says, so this file says the same numbers.
+ *
+ * Do not lower either row to express a house risk appetite. A ceiling states how much
+ * exposure is *possible*, and an integrator who reads `maxEmissionsBps` to answer "how
+ * much of an aggressive book can be funded by token emissions?" gets a wrong and
+ * flattering answer if this file says 6000 while the chain permits 10000. Understating
+ * a ceiling is not caution; it under-reports the exposure. Appetite belongs in the
+ * allocation, not the ceiling: `riskAversionBps` already tilts the weights, and a
+ * caller who wants their own book to hold less can pass a lower ceiling for that call.
+ * The published default has to match the chain.
+ *
+ * The aggressive emissions figure is 10000. That posture permits a book funded entirely
+ * by emissions, nothing on chain caps it lower, and nothing here should imply otherwise.
+ *
  * The emissions ceiling is retained even though the Solana BTC market currently has no
  * emission programmes at all. It has had them before and will again, and a ceiling that
  * only appears once the exposure exists is a ceiling nobody reviewed.
  *
- * These are defaults, not law. Anything here can be overridden per call, and the
- * on-chain vault parameters are the authority once the program is live.
+ * The remaining rows are defaults rather than law and can be overridden per call.
+ * Overriding the two yield-kind ceilings upward only produces allocations the program
+ * refuses; raising them for real takes a program upgrade, which is friction these two
+ * promises are load-bearing enough to deserve.
  */
 export const DEFAULT_CONSTRAINTS: AllocationConstraints = Object.freeze({
   profiles: Object.freeze({
     conservative: Object.freeze({
       maxCounterpartyBps: 0,
       maxUncorrelatedLpBps: 1_000,
-      maxEmissionsBps: 1_500,
+      // 2_000, from RiskProfile::max_emissions_bps. Was 1_500 here, which is the
+      // number an integrator would have quoted for the ceiling while the chain
+      // accepted a third more than that.
+      maxEmissionsBps: 2_000,
       maxSingleVenueBps: 3_000,
       maxSingleAssetBps: 4_000,
       maxWrapHops: 1,
@@ -66,7 +93,10 @@ export const DEFAULT_CONSTRAINTS: AllocationConstraints = Object.freeze({
       // refuses.
       maxCounterpartyBps: 0,
       maxUncorrelatedLpBps: 3_500,
-      maxEmissionsBps: 3_500,
+      // 5_000, from RiskProfile::max_emissions_bps. Half the book, not the 3_500
+      // this file used to publish. The balanced stance sentence on the site offers
+      // an emission schedule and this is how much of one it can actually hold.
+      maxEmissionsBps: 5_000,
       maxSingleVenueBps: 4_000,
       maxSingleAssetBps: 6_000,
       maxWrapHops: 2,
@@ -78,7 +108,10 @@ export const DEFAULT_CONSTRAINTS: AllocationConstraints = Object.freeze({
     aggressive: Object.freeze({
       maxCounterpartyBps: 3_000,
       maxUncorrelatedLpBps: 6_000,
-      maxEmissionsBps: 6_000,
+      // 10_000, from RiskProfile::max_emissions_bps: an aggressive book may be
+      // funded entirely by emissions. This file used to say 6_000, which read as a
+      // limit the chain does not impose. State the real one.
+      maxEmissionsBps: 10_000,
       maxSingleVenueBps: 5_000,
       maxSingleAssetBps: 7_000,
       maxWrapHops: 3,

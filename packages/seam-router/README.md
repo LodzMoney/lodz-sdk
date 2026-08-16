@@ -44,9 +44,9 @@ and varying by posture:
 
 | Ceiling | `conservative` | `balanced` | `aggressive` |
 | --- | --- | --- | --- |
-| Counterparty-funded yield | 0 | 1000 | 3000 |
+| Counterparty-funded yield | 0 | 0 | 3000 |
 | Uncorrelated LP exposure | 1000 | 3500 | 6000 |
-| Emission-funded yield | 1500 | 3500 | 6000 |
+| Emission-funded yield | 2000 | 5000 | 10000 |
 | Single venue | 3000 | 4000 | 5000 |
 | Single asset | 4000 | 6000 | 7000 |
 | Custody hops | 1 | 2 | 3 |
@@ -58,8 +58,15 @@ The emissions ceiling is kept even though the measured market currently has zero
 programmes. It has had them before and will again, and a ceiling that only appears once
 the exposure exists is a ceiling nobody reviewed.
 
-Every one of these is an argument, not a constant. Once the vault program is live, its
-on-chain parameters are the authority and should be passed in.
+The first two rows are not this package's argument. They are transcribed from
+`RiskProfile::max_emissions_bps` and `RiskProfile::max_counterparty_bps` in the
+`lodz-vault` program, which is deployed on devnet and rejects an allocation past either
+one with `EmissionsAllocationExceeded` or `CounterpartyAllocationExceeded`. Read the
+aggressive emissions row as written: that posture permits a book funded entirely by
+emissions. Earlier versions of this package published 1500 / 3500 / 6000 there, which
+understated what a stope can actually hold, and understating a ceiling is not caution.
+The remaining rows are defaults and can be overridden per call; overriding the first two
+upward only produces allocations the program refuses.
 
 ## Usage
 
@@ -122,8 +129,8 @@ books:
 
 ```
 profile        counterparty  ceiling   status
-conservative       0 bps        0   refused outright
-balanced        1000 bps     1000   ceiling is binding
+conservative       0 bps        0   X1 refused outright
+balanced           0 bps        0   X1 refused outright
 aggressive      1367 bps     3000   under ceiling
 ```
 

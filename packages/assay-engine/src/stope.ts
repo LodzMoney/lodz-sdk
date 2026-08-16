@@ -32,16 +32,46 @@ export type StopePolicyTable = Readonly<Record<StopeProfile, StopePolicy>>;
 /**
  * Default policy table.
  *
- * Conservative refuses high tier seams outright, caps emissions exposure at 20%
- * and refuses counterparty exposure entirely. Aggressive still caps emissions at
- * 70% and counterparty at 40%: no profile is allowed to sit entirely on yield
- * that has an end date or that depends on someone else losing money.
+ * The two ceilings are transcribed from the `lodz-vault` program, not chosen
+ * here: `RiskProfile::max_emissions_bps` and `RiskProfile::max_counterparty_bps`
+ * in `packages/anchor-program/programs/lodz-vault/src/state/mod.rs`. The chain
+ * rejects any allocation above them with `EmissionsAllocationExceeded` (6030)
+ * or `CounterpartyAllocationExceeded` (6053), so this table restates a limit
+ * that already exists rather than declaring one:
+ *
+ *     profile        maxEmissionsShareBps   maxCounterpartyShareBps
+ *     conservative              2_000                          0
+ *     balanced                  5_000                          0
+ *     aggressive               10_000                      3_000
+ *
+ * Do not lower a row to make a profile look safer. A ceiling answers "how far
+ * is this stope allowed to go", so a smaller number here does not restrain the
+ * vault, it only leads an integrator to under-report the exposure the program
+ * actually permits. Risk appetite belongs in the allocation a stope actually
+ * holds, which is what `deriveStopeAllocation` returns and what
+ * `emissionsShareBps` and `counterpartyShareBps` report; it does not belong in
+ * an understated limit. A row that disagrees with the Rust is a bug in this
+ * file, and moving a limit for real means shipping a program upgrade first.
+ *
+ * Stated plainly, because the number is easy to skim past: the aggressive
+ * emissions ceiling is 10_000 bps, which is all of it. An aggressive stope may
+ * sit entirely on yield that has an end date. Nothing in this engine prevents
+ * that; what it does instead is report the emissions share on every projection
+ * and model the rate after those programs stop.
+ *
+ * Only the two ceilings are chain constants. The risk tier weights and
+ * exclusions below are routing shape with no counterpart in this table -- the
+ * program's own `max_risk_tier` grades on a 1..5 scale rather than the
+ * low/medium/high band used here -- and a caller may replace the whole table
+ * through `deriveStopeAllocation`'s `policies` argument or `projectYield`'s
+ * `stopePolicies`.
  */
 export const DEFAULT_STOPE_POLICIES: StopePolicyTable = Object.freeze({
   conservative: {
     profile: "conservative",
     riskTierWeights: { low: 6, medium: 2, high: 0 },
     excludedRiskTiers: ["high"],
+    // RiskProfile::Conservative, lodz-vault state/mod.rs
     maxEmissionsShareBps: 2_000,
     maxCounterpartyShareBps: 0,
   },
@@ -49,15 +79,18 @@ export const DEFAULT_STOPE_POLICIES: StopePolicyTable = Object.freeze({
     profile: "balanced",
     riskTierWeights: { low: 4, medium: 3, high: 1 },
     excludedRiskTiers: [],
-    maxEmissionsShareBps: 4_000,
-    maxCounterpartyShareBps: 1_500,
+    // RiskProfile::Balanced, lodz-vault state/mod.rs
+    maxEmissionsShareBps: 5_000,
+    maxCounterpartyShareBps: 0,
   },
   aggressive: {
     profile: "aggressive",
     riskTierWeights: { low: 2, medium: 3, high: 3 },
     excludedRiskTiers: [],
-    maxEmissionsShareBps: 7_000,
-    maxCounterpartyShareBps: 4_000,
+    // RiskProfile::Aggressive, lodz-vault state/mod.rs. 10_000 is 100%: an
+    // aggressive stope may be entirely emissions funded.
+    maxEmissionsShareBps: 10_000,
+    maxCounterpartyShareBps: 3_000,
   },
 });
 

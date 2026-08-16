@@ -411,6 +411,120 @@ test("an uncorrelated pair is discounted against a correlated one at equal headl
   assert.ok(bpsOf(result, "lp-correlated") > bpsOf(result, "lp-uncorrelated"));
 });
 
+/**
+ * The two yield-kind ceilings are pinned to exact literals, not compared with `<=`.
+ *
+ * Every other ceiling assertion in this file checks that a *result* sits under
+ * `DEFAULT_CONSTRAINTS`, which passes no matter what those defaults say. That is why
+ * this package shipped 1_500 / 3_500 / 6_000 emissions ceilings against an on-chain
+ * `RiskProfile::max_emissions_bps` of 2_000 / 5_000 / 10_000 without a single test
+ * turning red: the router was inside its own numbers, and its own numbers were wrong.
+ *
+ * These six values must equal `RiskProfile::max_emissions_bps` and
+ * `RiskProfile::max_counterparty_bps` in
+ * `packages/anchor-program/programs/lodz-vault/src/state/mod.rs`. The chain is the
+ * authority -- it rejects allocations past them with `EmissionsAllocationExceeded`
+ * (6030) and `CounterpartyAllocationExceeded` (6053) -- so a mismatch in either
+ * direction is a defect. Too high proposes transactions the program refuses; too low
+ * under-reports to anyone using this package to size what a stope can hold.
+ *
+ * If this test fails, fix the constraints table to match the program. Do not edit the
+ * literals here to match a new default: that is the failure mode this test exists to
+ * catch. They move only when a program upgrade moves the chain first.
+ */
+test("the default yield-kind ceilings equal the on-chain RiskProfile", () => {
+  const { conservative, balanced, aggressive } = DEFAULT_CONSTRAINTS.profiles;
+
+  assert.equal(conservative.maxEmissionsBps, 2_000, "RiskProfile::max_emissions_bps, Conservative");
+  assert.equal(balanced.maxEmissionsBps, 5_000, "RiskProfile::max_emissions_bps, Balanced");
+  assert.equal(aggressive.maxEmissionsBps, 10_000, "RiskProfile::max_emissions_bps, Aggressive");
+
+  assert.equal(conservative.maxCounterpartyBps, 0, "RiskProfile::max_counterparty_bps, Conservative");
+  assert.equal(balanced.maxCounterpartyBps, 0, "RiskProfile::max_counterparty_bps, Balanced");
+  assert.equal(aggressive.maxCounterpartyBps, 3_000, "RiskProfile::max_counterparty_bps, Aggressive");
+
+  // The aggressive emissions ceiling is the whole book. Stated outright so that
+  // nobody reads 10_000 as a typo and quietly trims it back to something tidier.
+  assert.equal(
+    aggressive.maxEmissionsBps,
+    BPS_TOTAL,
+    "an aggressive book may be funded entirely by emissions, and the chain does not cap it lower",
+  );
+
+  // A zero counterparty ceiling is the branch in allocation.ts that refuses the seam
+  // outright rather than capping it at zero, so the two refusing profiles must stay
+  // exactly zero rather than merely small.
+  assert.equal(conservative.maxCounterpartyBps, 0);
+  assert.equal(balanced.maxCounterpartyBps, 0);
+});
+
+/**
+ * The corrected ceilings are load-bearing, not decorative constants.
+ *
+ * The literal test above would still pass if `maxEmissionsBps` were never read, so this
+ * one routes a catalogue rich enough in emissions to press against the ceiling and
+ * checks where it stops. It also fixes the difference between the two yield-kind
+ * ceilings, which is easy to misread: `maxCounterpartyBps <= 0` is an exclusion branch
+ * in `allocation.ts`, so a counterparty seam is refused outright with a recorded reason,
+ * while `maxEmissionsBps` is only a group cap. Emissions exposure is therefore resized,
+ * never refused, and raising the ceiling admits no seam that was previously excluded.
+ */
+test("the emissions ceiling caps exposure rather than excluding the seam", () => {
+  const emissionsSeam = (id: string, asset: string, venue: string): Seam =>
+    seam({
+      id,
+      venue,
+      asset,
+      kind: "lending",
+      yieldKind: "emissions",
+      apy7dBps: 3_000,
+      apy30dBps: 3_000,
+      tvlUsd: 80_000_000,
+      riskTier: "low",
+      emissionToken: "future-token",
+      emissionEndsAt: "2027-01-01T00:00:00.000Z",
+    });
+  const catalogue: Seam[] = [
+    emissionsSeam("E1", "cbBTC", "venue-e1"),
+    emissionsSeam("E2", "zBTC", "venue-e2"),
+    emissionsSeam("E3", "xBTC", "venue-e3"),
+    seam({ id: "S-a", venue: "venue-sa", asset: "cbBTC", apy7dBps: 500, apy30dBps: 500, tvlUsd: 80_000_000 }),
+    seam({ id: "S-b", venue: "venue-sb", asset: "zBTC", apy7dBps: 500, apy30dBps: 500, tvlUsd: 80_000_000 }),
+  ];
+  const route = (stope: StopeProfile): AllocationPlan =>
+    planAllocation({ seams: catalogue, stope, capitalBtc: 1, btcPriceUsd: BTC_PRICE_USD, now: FIXTURE_NOW });
+
+  // Emissions pay six times what the sustainable seams pay here, so every posture
+  // fills to its ceiling and stops exactly there.
+  const conservative = route("conservative");
+  const balanced = route("balanced");
+  assert.equal(conservative.emissionsBps, 2_000, "conservative fills to its 2000 bps ceiling");
+  assert.equal(balanced.emissionsBps, 5_000, "balanced fills to its 5000 bps ceiling");
+
+  // Under the ceilings this package used to publish, these books stopped at 1500 and
+  // 3500. The correction is visible in the routing, not only in the constant.
+  assert.ok(conservative.emissionsBps > 1_500);
+  assert.ok(balanced.emissionsBps > 3_500);
+
+  // Aggressive is capped at the full book, so the emissions group can never be what
+  // stops a position growing. Something else always binds first.
+  const aggressive = route("aggressive");
+  assert.ok(aggressive.emissionsBps > 6_000, "the old 6000 ceiling was a real limit, and it is gone");
+  assert.ok(
+    !aggressive.allocations.some((entry) => entry.bindingCap === "emissions"),
+    "a ceiling equal to the whole book cannot be the binding constraint",
+  );
+
+  // No emissions seam is ever excluded for being over the ceiling: there is no such
+  // reason code, only the counterparty one. Raising the ceiling changes sizes, not
+  // eligibility.
+  for (const result of [conservative, balanced, aggressive]) {
+    for (const id of ["E1", "E2", "E3"]) {
+      assert.ok(bpsOf(result, id) > 0, `${id} is sized by the ceiling, never refused by it`);
+    }
+  }
+});
+
 test("the emissions ceiling survives even though the measured market has no emissions", () => {
   assert.equal(
     MEASURED_SEAMS.filter((entry) => entry.yieldKind === "emissions").length,
