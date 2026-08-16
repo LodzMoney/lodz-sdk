@@ -6,12 +6,15 @@ Identical code to 0.1.2. Published on a new minor line because the default
 emissions ceilings changed value, and a patch number does not tell a reader to
 look.
 
-Both versions exist deliberately. Under a 0.x caret range, `^0.1.1` resolves to
-`>=0.1.1 <0.2.0`, so a minor release does not reach anyone already depending on
-this package. 0.1.2 is what removes the incorrect values from existing installs.
-0.2.0 is what `latest` carries, so a new integration starts on the corrected line
-and the version history records that the defaults moved rather than hiding it in
-a patch.
+0.1.2 was the route to consumers pinned below 0.2.0: under a 0.x caret range
+`^0.1.1` resolves to `>=0.1.1 <0.2.0`, so a minor release on its own reaches
+nobody who already depends on this package. That line is now empty, and 0.1.x
+receives nothing further. Do not backport to it.
+
+A version number only signals to whoever takes `latest`. Anyone asking for
+`@lodz/seam-router@0.1.1` by name still gets ceilings lower than the vault
+program enforces, and no numbering scheme prevents that, so 0.1.0 and 0.1.1 are
+deprecated on the registry and say so at install time.
 
 ## 0.1.2
 
