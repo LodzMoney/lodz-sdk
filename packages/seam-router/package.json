@@ -1,6 +1,6 @@
 {
   "name": "@lodz/seam-router",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Deterministic capital routing across BTC yield seams on Solana. Enforces per-posture ceilings on counterparty-funded, emission-funded and uncorrelated LP exposure, routes on trailing rates rather than spot, and never treats an unmeasured impermanent loss as zero.",
   "keywords": [
     "solana",
@@ -40,7 +40,8 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "CHANGELOG.md"
   ],
   "sideEffects": false,
   "engines": {
