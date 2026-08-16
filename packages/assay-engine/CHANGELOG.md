@@ -1,5 +1,25 @@
 # Changelog
 
+## Unreleased — pending a program upgrade, not yet approved
+
+`RiskProfile::max_emissions_bps` for the conservative stope is being taken from
+2000 to 0, so that the zero the site has always published is a rule the chain
+enforces rather than a routing habit. Nothing here changes until that upgrade is
+deployed. Publishing the new number first would leave this package stating a
+ceiling stricter than the live program, which is the same defect as 0.1.1 with
+the sign flipped.
+
+When it lands, two versions ship together, for the reason 0.1.2 and 0.2.0 shipped
+together:
+
+| Version | Reaches | Why it exists |
+|---|---|---|
+| 0.2.1 | consumers on `^0.2.0` | a caret range in 0.x stops at the next minor, so only a patch reaches them |
+| 0.3.0 | `latest` | the default's meaning changes again, and a patch number does not say so |
+
+The 0.2.x line closes the moment its consumers move to `^0.3.0`, exactly as 0.1.x
+did. Write that down here at the time rather than rediscovering it.
+
 ## 0.2.0
 
 Identical code to 0.1.2. Published on a new minor line because the default
